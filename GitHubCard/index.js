@@ -1,9 +1,13 @@
+import axios from 'axios'
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-
+const cards = document.querySelector(".cards")
+const myGitHubInfo = axios
+.get('https://apl.github.com/users/BryantP47')
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -16,7 +20,14 @@
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
-
+.then((res){
+  const userD = res.data;
+  const card = cardMaker(userD);
+  cards.appendChild(card);
+})
+.catch((error){
+ console.log(error)
+})
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
     follow this link in your browser https://api.github.com/users/<Your github name>/followers,
@@ -50,6 +61,9 @@ const followersArray = [];
     </div>
 */
 
+
+
+
 /*
   List of LS Instructors Github username's:
     tetondan
@@ -58,3 +72,49 @@ const followersArray = [];
     luishrd
     bigknell
 */
+
+
+const cards = document.querySelector('div.cards');
+
+function cardMaker(profiles) {
+  const card = document.createElement('div');
+  const image = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const name = document.createElement('h3'); 
+  const userName = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const link = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+
+  card.appendChild(image);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(name);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+  profile.appendChild(link);
+
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  name.classList.add('name');
+  userName.classList.add('username');
+
+  image.src = profiles.avatar_url;
+  name.textContent = profiles.name;
+  userName.textContent = profiles.login;
+  location.textContent = profiles.location;
+  link.href = profiles.html_url;
+  link.textContent = profiles.html_url;
+  followers.textContent = profiles.followers;
+  following.textContent = profiles .following;
+  bio.textContent = profiles.bio
+  
+  
+  return card
+}
